@@ -11,7 +11,7 @@ using namespace std;
 
 void outputMenu();
 template<typename T>
-void fillArray(List<T>& list);
+void fillList(List<T>& list);
 template<typename T>
 void formList(List<T>& list_1, List<T>& list_2, List<T>& list);
 template<typename T>
@@ -34,23 +34,26 @@ int main() {
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+	// while will lasts until '0' will be entered
 	while (chosenTask) {
 
 		switch (chosenTask) {
 
 		case 1: {
 
+			// '0' is used as a signal of the end of input
 			cout << "\nEnter the elements of the " 
 				<< list_1.getName() << " list:\n";
-			fillArray(list_1);
+			fillList(list_1);
 
 			cout << "\nEnter the elements of the " 
 				<< list_2.getName() << " list:\n";
-			fillArray(list_2);
+			fillList(list_2);
 			break;
 		}
 		case 2: {
 
+			// checking the existance of both base lists
 			if (!list_1.getSize() || !list_2.getSize()) {
 
 				cerr << "\nUnable to form new list due to the lack of "
@@ -69,6 +72,8 @@ int main() {
 			cout << "\nEnter the number of the beginning element:\n";
 			cin >> index;
 
+			// checking right position enter
+			// index as a position can't be lower than 1
 			if (!cin.good() || index < 1 || index > list_1.getSize()) {
 
 				cerr << "\nIncorrect number. Try again.\n";
@@ -83,6 +88,7 @@ int main() {
 			cout << "\nEnter the range:\n";
 			cin >> range;
 
+			// checking the ability to delete chosen number of elements
 			if (!cin.good() || range < 1 || range > list_1.getSize() - index) {
 
 				cerr << "\nIncorrect range. Try again.\n";
@@ -98,7 +104,9 @@ int main() {
 
 			if (list_2.getSize() < 2) {
 
-				cerr << "\nUnable to sort " << list_2.getName() << ". Try again.\n";
+				// sorting is useless if there is less than 2 elem in the list
+				cerr << "\nUnable to sort " << list_2.getName() 
+					<< ". Try again.\n";
 				break;
 			}
 
@@ -146,6 +154,7 @@ int main() {
 
 		if (list_1.getSize() || list_2.getSize() || list.getSize()) {
 
+			// if all lists are empty table isn't displayed
 			cout << "\nCurrent lists are:\n";
 			outputLists(list_1, list_2, list);
 		}
@@ -172,7 +181,7 @@ void outputMenu() {
 }
 
 template<typename T>
-void fillArray(List<T>& list) {
+void fillList(List<T>& list) {
 
 	T temp;
 
@@ -187,20 +196,21 @@ void fillArray(List<T>& list) {
 
 template<typename T>
 void formList(List<T>& list_1, List<T>& list_2, List<T>& list) {
-
-	set<T> unique;
+	
+	set<T> unique; // using set for sorting and filtering out duplicates
 	for (size_t i = 0; i < list_1.getSize(); i++) {
 
 		for (size_t j = 0; j < list_2.getSize(); j++) {
 
+			// searching for the identical elements
 			if (list_1[i] == list_2[j]) {
 
 				unique.insert(list_1[i]);
 			}
 		}
 	}
-
-	for (auto& element : unique) {
+	
+	for (auto& element : unique) { // writing elements of a set to a list
 
 		list.pushFront(element);
 	}
@@ -209,6 +219,8 @@ void formList(List<T>& list_1, List<T>& list_2, List<T>& list) {
 template<typename T>
 void sort(List<T>& list) {
 
+	// using vector of ASCII codes for sorting
+	// also could be done with multiset
 	vector<int> temp;
 
 	for (size_t i = 0; i < list.getSize(); i++) {
@@ -216,8 +228,10 @@ void sort(List<T>& list) {
 		temp.push_back((int)list[i]);
 	}
 
-	sort(temp.begin(), temp.end());
+	
+	sort(temp.begin(), temp.end()); // built-in ascending sort function
 
+	// writing char equivalents of ASCII codes to a list
 	for (size_t i = 0; i < list.getSize(); i++) {
 
 		list[i] = (char)temp.at(i);
@@ -237,6 +251,8 @@ void outputLists(List<T>& list_1, List<T>& list_2, List<T>& list_3) {
 
 	size_t maxSize = max(list_1.getSize(), max(list_2.getSize(), list_3.getSize()));
 
+	// condition set, which allows to avoid out of range problem during 
+	// filling of the table
 	for (size_t i = 0; i < maxSize; i++) {
 
 		if (list_1.getSize() <= i) {
@@ -275,5 +291,6 @@ void outputLists(List<T>& list_1, List<T>& list_2, List<T>& list_3) {
 		}
 	}
 
+	// printing the formed table
 	table.print(cout);
 }

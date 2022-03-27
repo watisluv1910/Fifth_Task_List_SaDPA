@@ -3,6 +3,8 @@
 template<typename T>
 inline List<T>::List(string name) {
 
+	// constructor
+	// class List fields initialization
 	this->size = 0;
 	this->head = nullptr;
 	this->name = name;
@@ -11,12 +13,14 @@ inline List<T>::List(string name) {
 template<typename T>
 inline List<T>::~List() {
 
-	clear();
+	// destructor
+	clear(); // deleting the list
 }
 
 template<typename T>
 void List<T>::pushFront(T data) {
 
+	// creating new head Node object and head pointer update 
 	head = new Node<T>(data, head);
 	size++;
 }
@@ -24,10 +28,12 @@ void List<T>::pushFront(T data) {
 template<typename T>
 void List<T>::remove(size_t index, size_t range) {
 
+	// deleting Nodes obj in selected range starting from the selected index
 	while (range) {
 
 		if (!index) {
 
+			// deleting from the beginning of the list
 			popFront();
 			range--;
 		}
@@ -41,8 +47,11 @@ void List<T>::remove(size_t index, size_t range) {
 				previous = previous->pNext;
 			}
 
+			// creating temp object pointer
 			Node<T>* toDelete = previous->pNext;
-			previous->pNext = toDelete->pNext;
+			// removing an object from the list
+			previous->pNext = toDelete->pNext; 
+			// deleting removed object
 			delete toDelete;
 
 			size--;
@@ -54,12 +63,13 @@ void List<T>::remove(size_t index, size_t range) {
 template<typename T>
 void List<T>::popFront() {
 
-	Node<T>* temp = head;
+	Node<T>* temp = head; // creating temp object pointer
 
-	head = head->pNext;
-	delete temp;
+	head = head->pNext; // removing an object from the list
 
-	this->size--;
+	delete temp; // deleting removed object
+
+	size--;
 }
 
 template<typename T>
