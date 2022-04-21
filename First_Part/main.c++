@@ -43,18 +43,18 @@ int main() {
 
 			// '0' is used as a signal of the end of input
 			cout << "\nEnter the elements of the " 
-				<< list_1.getName() << " list:\n";
+				<< list_1.get_name() << " list:\n";
 			fillList(list_1);
 
 			cout << "\nEnter the elements of the " 
-				<< list_2.getName() << " list:\n";
+				<< list_2.get_name() << " list:\n";
 			fillList(list_2);
 			break;
 		}
 		case 2: {
 
 			// checking the existance of both base lists
-			if (!list_1.getSize() || !list_2.getSize()) {
+			if (!list_1.get_size() || !list_2.get_size()) {
 
 				cerr << "\nUnable to form new list due to the lack of "
 					"it's parents. Try again.\n";
@@ -74,7 +74,7 @@ int main() {
 
 			// checking right position enter
 			// index as a position can't be lower than 1
-			if (!cin.good() || index < 1 || index > list_1.getSize()) {
+			if (!cin.good() || index < 1 || index > list_1.get_size()) {
 
 				cerr << "\nIncorrect number. Try again.\n";
 				cin.clear();
@@ -89,7 +89,7 @@ int main() {
 			cin >> range;
 
 			// checking the ability to delete chosen number of elements
-			if (!cin.good() || range < 1 || range > list_1.getSize() - index) {
+			if (!cin.good() || range < 1 || range > list_1.get_size() - index) {
 
 				cerr << "\nIncorrect range. Try again.\n";
 				cin.clear();
@@ -102,10 +102,10 @@ int main() {
 		}
 		case 4: {
 
-			if (list_2.getSize() < 2) {
+			if (list_2.get_size() < 2) {
 
 				// sorting is useless if there is less than 2 elem in the list
-				cerr << "\nUnable to sort " << list_2.getName() 
+				cerr << "\nUnable to sort " << list_2.get_name() 
 					<< ". Try again.\n";
 				break;
 			}
@@ -119,15 +119,15 @@ int main() {
 			cout << "\nEnter the name of the list you want to delete:\n";
 			getline(cin, name);
 
-			if (name == list_1.getName()) {
+			if (name == list_1.get_name()) {
 
 				list_1.clear();
 			}
-			else if (name == list_2.getName()) {
+			else if (name == list_2.get_name()) {
 
 				list_2.clear();
 			}
-			else if (name == list.getName()) {
+			else if (name == list.get_name()) {
 
 				list.clear();
 			}
@@ -152,7 +152,7 @@ int main() {
 
 		outputMenu();
 
-		if (list_1.getSize() || list_2.getSize() || list.getSize()) {
+		if (list_1.get_size() || list_2.get_size() || list.get_size()) {
 
 			// if all lists are empty table isn't displayed
 			cout << "\nCurrent lists are:\n";
@@ -198,9 +198,9 @@ template<typename T>
 void formList(List<T>& list_1, List<T>& list_2, List<T>& list) {
 	
 	set<T> unique; // using set for sorting and filtering out duplicates
-	for (size_t i = 0; i < list_1.getSize(); i++) {
+	for (size_t i = 0; i < list_1.get_size(); i++) {
 
-		for (size_t j = 0; j < list_2.getSize(); j++) {
+		for (size_t j = 0; j < list_2.get_size(); j++) {
 
 			// searching for the identical elements
 			if (list_1[i] == list_2[j]) {
@@ -223,7 +223,7 @@ void sort(List<T>& list) {
 	// also could be done with multiset
 	vector<int> temp;
 
-	for (size_t i = 0; i < list.getSize(); i++) {
+	for (size_t i = 0; i < list.get_size(); i++) {
 		
 		temp.push_back((int)list[i]);
 	}
@@ -232,7 +232,7 @@ void sort(List<T>& list) {
 	sort(temp.begin(), temp.end()); // built-in ascending sort function
 
 	// writing char equivalents of ASCII codes to a list
-	for (size_t i = 0; i < list.getSize(); i++) {
+	for (size_t i = 0; i < list.get_size(); i++) {
 
 		list[i] = (char)temp.at(i);
 	}
@@ -244,24 +244,24 @@ void outputLists(List<T>& list_1, List<T>& list_2, List<T>& list_3) {
 	// creating an object of VariabicTable class 
 	// with table header parameters:
 	VariadicTable<size_t, T, T, T> table ({ "Num.",
-		list_1.getName(),
-		list_2.getName(),
-		list_3.getName(),
+		list_1.get_name(),
+		list_2.get_name(),
+		list_3.get_name(),
 	});
 
-	size_t maxSize = max(list_1.getSize(), max(list_2.getSize(), list_3.getSize()));
+	size_t maxSize = max(list_1.get_size(), max(list_2.get_size(), list_3.get_size()));
 
 	// condition set, which allows to avoid out of range problem during 
 	// filling of the table
 	for (size_t i = 0; i < maxSize; i++) {
 
-		if (list_1.getSize() <= i) {
+		if (list_1.get_size() <= i) {
 
-			if (list_2.getSize() <= i) {
+			if (list_2.get_size() <= i) {
 
 				table.addRow(i + 1, ' ', ' ', list_3[i]);
 			}
-			else if (list_3.getSize() <= i) {
+			else if (list_3.get_size() <= i) {
 
 				table.addRow(i + 1, ' ', list_2[i], ' ');
 			}
@@ -270,9 +270,9 @@ void outputLists(List<T>& list_1, List<T>& list_2, List<T>& list_3) {
 				table.addRow(i + 1, ' ', list_2[i], list_3[i]);
 			}
 		}
-		else if (list_2.getSize() <= i) {
+		else if (list_2.get_size() <= i) {
 
-			if (list_3.getSize() <= i) {
+			if (list_3.get_size() <= i) {
 
 				table.addRow(i + 1, list_1[i], ' ', ' ');
 			}
@@ -281,7 +281,7 @@ void outputLists(List<T>& list_1, List<T>& list_2, List<T>& list_3) {
 				table.addRow(i + 1, list_1[i], ' ', list_3[i]);
 			}
 		}
-		else if (list_3.getSize() <= i) {
+		else if (list_3.get_size() <= i) {
 			
 			table.addRow(i + 1, list_1[i], list_2[i], ' ');
 		}

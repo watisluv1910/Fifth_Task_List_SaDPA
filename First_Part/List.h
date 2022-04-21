@@ -15,8 +15,8 @@ public:
 	void remove(size_t index, size_t range);
 	void popFront(); // removes first node of the list
 	void clear(); // removes all nodes of the list
-	size_t getSize() { return size; }
-	string getName() { return name; }
+	size_t get_size() { return size_; }
+	string get_name() { return name_; }
 
 	T& operator[](const size_t index); // operator [] override
 
@@ -27,22 +27,22 @@ private:
 	class Node {
 	public:
 		
-		Node* pNext; // pointer to the next Node object
-		T data; // info in a list cell
+		Node* next_obj_ptr; // pointer to the next Node object
+		T data_; // info in a list cell
 
 		// T() means zero value for template type
 		Node(T data = T(), Node* pNext = nullptr) {
 
-			this->data = data;
-			this->pNext = pNext;
+			this->data_ = data;
+			this->next_obj_ptr = pNext;
 		};
 
 		~Node() {};
 	};
 
-	size_t size; // the size of the list
-	Node<T>* head; // pointer to the head Node object
-	string name; // name of the list
+	size_t size_; // the size of the list
+	Node<T>* head_obj_ptr; // pointer to the head Node object
+	string name_; // name of the list
 };
 
 #endif
